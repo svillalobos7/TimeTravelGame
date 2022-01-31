@@ -381,3 +381,550 @@ int main(void)
         }
     }
 }
+int rando(void)
+{
+	int r = (rand() % 2) + 1;
+	return r;
+}
+void shuffle(int *a, int *b, int SIZE)
+{
+	int i;
+	int hold;
+	for(i = 0; i < SIZE; i++)
+	{
+		hold = *(b + i);
+		*(b + i) = *(a + i + 1);
+		*(a + i + 1) = hold;
+	}
+}
+
+
+void stringStuff(char *ptr)
+{
+	printf("Here is your string before any manipulation: %s\n", ptr);
+
+	int i;
+	for(i = 0; i < 256; i++)	
+	{
+		if(isupper(*(ptr + i)))
+		{
+			*(ptr + i) = tolower(*(ptr+i));
+		}
+		else if(islower(*(ptr+i)))
+		{
+			*(ptr + i) = toupper(*(ptr + i));
+		}
+		else
+		{
+			continue;
+		}
+		ptr + i;
+	}
+	printf("Here is your string after i messed with it: %s\n", ptr);
+	
+}
+
+
+void combine(int *a, int *b, int *c, int *d, int *all)
+{
+	int i;
+	int j;
+	int k;
+	int l;
+	int m;
+	
+	for(i = 0; i < 52; i++)
+	{
+		all[j++] = a[i++];
+		all[k++] = b[i++];
+		all[l++] = c[i++];
+		all[m++] = d[i++];
+	}
+}
+
+int gambleRandom(void)
+{
+	int r = (rand() % 14) + 1;
+	return r;
+}
+
+int room12Spells(int *hp, int enDam)	//spell chanting
+{
+	char fire[] = "fire";
+	char thun[] = "thunder";
+	char heal[] = "heal";
+	char ref[] = "reflect";
+	char spell[9] = "";
+	puts("Enter any of the following spells: fire, thunder, heal, or reflect");
+	scanf("%s", spell);
+	char *ch = spell;
+	int i = 0, spellC = 0;
+	for (i = 0, spellC = 0; i<4; i++)
+	{
+		if (*(ch + i) == fire[i])
+		{
+			spellC++;
+		}
+		else
+		{
+			break;
+		}
+	}
+	if (spellC == 4)
+	{
+		puts("You casted the fire spell succesfully!");
+		return 4;	//guarunteed 4 damage
+	}
+	for (i = 0, spellC = 0; i<4; i++)
+	{
+		if (*(ch + i) == heal[i])
+		{
+			spellC++;
+		}
+		else
+		{
+			break;
+		}
+	}
+	if (spellC == 4)
+	{
+		if (*hp + 10>20)
+		{
+			*hp = 20;
+		}
+		else
+		{
+			*hp += 10;
+		}
+		puts("You casted the heal spell succesfully!");
+		return 0;	//heal 10 hp
+	}
+	for (i = 0, spellC = 0; i<7; i++)
+	{
+		if (*(ch + i) == thun[i])
+		{
+			spellC++;
+		}
+		else
+		{
+			break;
+		}
+	}
+	if (spellC == 7)
+	{
+
+		if (rand() % 2 == 1)
+		{		//50% chance of hitting
+			puts("You casted the thunder spell succesfully!");
+			return 8;
+		}
+		else
+		{
+			puts("You casted the thunder spell unsuccesfully!");
+			return 0;
+		}
+	}
+	for (i = 0, spellC = 0; i<7; i++)
+	{
+		if (*(ch + i) == ref[i])
+		{
+			spellC++;
+		}
+		else
+		{
+			break;
+		}
+	}
+	if (spellC == 7)
+	{
+		puts("You casted the reflect spell succesfully!");
+		return enDam;	//reflect enemy damage
+	}
+	puts("You failed to cast any spell!");
+	return 0;		//failed spell
+}
+
+int room7DiceRoll(int side)
+{
+	int roll = (rand() % side) +1;
+	return roll;
+}
+
+void room7RandomNum(int *ptr, int size)
+{
+	int i;
+	for(i=0;i<5;i++)
+	{
+		for(i=0;i<size;i++)
+		{
+			*ptr = (rand()%100)+1;
+			ptr++;
+		}
+	}
+}
+
+void room7SortNum(int *ptr, int size)
+{
+	int i, j;
+	int temp;
+	for(i=0;i<size;i++)
+	{
+		for(j=i+1;j<size;j++)
+		{
+			if(*(ptr+i)<=*(ptr+j))
+			{
+				temp = *(ptr+i);
+				*(ptr+i) = *(ptr+j);
+				*(ptr+j) = temp;
+			}
+		}
+	}
+}
+
+void writeAnswers()
+{
+    int input = 0;
+	FILE *wptr;
+
+    wptr = fopen("output.txt", "w");
+
+
+        puts("Enter the magicNumber: ");
+        scanf("%d", &input);
+
+        fprintf(wptr, "%d\n", input);
+
+        puts("Enter the weight Balance: ");
+        scanf("%d", &input);
+
+        fprintf(wptr, "%d\n", input);
+
+	fclose(wptr);
+}
+
+
+int checkAnswers(int *ptr)
+{
+    FILE *rptr;
+    int i;
+	int ptrInt = 0;
+	int correct = 0;
+
+	if((rptr = fopen("output.txt", "r")) == NULL)
+	{
+		puts("File could not be opened");
+	}
+	else
+    {
+        while(!feof(rptr))
+		{
+            fscanf(rptr, "%d", ptrInt);
+
+            for(i = 0; i < 2; i++)
+            {
+                if(ptrInt == *ptr)
+                {
+                    correct++;
+                    ptr++;
+                }
+            }
+			//compare reader with ptr
+
+		}
+    }
+    rewind(rptr);
+    fclose(rptr);
+    return correct;
+
+}
+void printUpper(char *arr, int size)
+{
+	int i;
+	for(i=0;i<size;i++)
+	{
+		if(islower(arr[i]))
+		{
+			*(arr+i) = toupper(*(arr+i));
+		}
+	}
+	printf("%s",arr);
+}
+int RolltheDiceman(void)
+{
+	int a;
+	a = (rand() % 6) + 1;
+	return a;
+}
+
+void casecheck(void)
+{
+	char input[] ={'"','T','h','e','y',' ','D','i','d',' ','S','u','r','g','e','r','y',' ','O','n',' ','A',' ','G','R','A','P','E','!','"'};
+	int upper=0, lower=0, guessadd,i;
+	for(i=0;i<input[i]!='\0';i++)
+	{
+		if(isupper(input[i]))
+		{
+			upper++;
+		}
+		if(islower(input[i]))
+		{
+			lower++;
+		}
+		printf("%c",input[i]);
+	}
+	puts("\nHow many lowercase and uppercase letters are in the string you entered?\n");
+	scanf("%d", &guessadd);
+	if(guessadd == (upper+lower))
+	{
+		printf("Correct! There were %d lowercase letters and %d uppercase letters\n", lower, upper);
+		puts("You may leave.... Never come back...muahahah");
+	}
+	else
+	{
+		printf("Incorrect! There were %d lowercase letters and %d uppercase letters\n", lower, upper);
+		puts("I will now freeze you to death!!!!\n");
+		puts("----- GAME OVER -----\n");
+	}
+}
+
+void readfile(void)
+{
+	char accountuser[30] = {0};
+	FILE *wptr;
+	FILE *rptr;
+	unsigned int account = 0;
+	double balance = 0;
+	double balanceguess = 0;
+
+	if((rptr = fopen("input.txt", "r")) == NULL)
+	{
+		puts("File could not be opened" );
+		puts("REQUIRES A 'input.txt' file \n");
+	}
+	else
+	{
+		puts("If you add Tim's balance with Roman's balance what do you get?\n");
+		puts("Displaying all balance accounts.\n");
+		fscanf(rptr,"%d%s%lf", &account, accountuser, &balance );
+		rewind(rptr);
+		while(!feof(rptr))
+		{
+			fscanf(rptr,"%d%s%lf", &account, accountuser, &balance );
+			printf("%d %s %.2f\n", account, accountuser, balance);
+		}
+	}
+	scanf("%lf", &balanceguess);
+	if(balanceguess == 62.78)
+	{
+		puts("Correct! You may leave.... \n");
+	}
+	else
+	{
+		puts("I will now throw the knife back at you!!!!\n");
+		puts("----- GAME OVER -----\n");
+	}
+}
+
+void randomfill(void)
+{
+	srand(time(NULL));
+	int i=0,y=0,z=0,swap;
+	int firstArray[5] = {0};
+	int secondArray[5] = {0};
+	
+	for(i=0;i<5;i++)
+	{
+		firstArray[i] = rand() % (200 + 1);
+		i++;
+	}
+	for(i=0;i<5;i++)
+	{
+		secondArray[i] = rand() % (200 + 1);
+		i++;
+	}
+		
+	puts("Before Swap \n");
+	for(i=0;i<5;i++)
+	{
+		printf("firstArray[%d]=%d, secondArray[%d]=%d\n", i, firstArray[i], i, secondArray[i]);
+	}
+        puts("\n");
+	puts("After Swap \n");
+	for(y=0;y<5;y++)
+	{
+		swap = firstArray[y];
+                firstArray[y]=secondArray[y];
+		secondArray[y] = swap;
+		
+	}
+        for(z=0;z<5;z++)
+        {
+		printf("firstArray[%d]=%d, secondArray[%d]=%d\n", z, firstArray[z], z, secondArray[z]);
+	}
+	puts("To be honest, this choice shouldn't even be an option....\n");
+	puts("I guess I have no other choice but to kill you.... muahahaha\n");
+	puts("----- GAME OVER -----\n");
+}
+
+
+
+int checkInput(char option[10]){
+	
+	//return 0 if alphanumeric
+	//return 1 if has alpha characters
+	//return 2 if has numbers
+	for(int i = 0; i < 10; i++){
+		if(isalnum(option[i])){
+			if(isalpha(option[i])){
+				return 0; //alpha character
+				break;
+			}
+			
+			if(isdigit(option[i])){
+				return 1; // a integer
+				break;
+				
+			}
+			
+		}else{
+			return -1;
+			break;
+		}
+	}
+	
+	return -1;
+}
+
+
+void gameOver(int winOrlose){
+	
+	int gamesPlayed = 0;
+	int totalDeaths = 0;
+	int totalWins = 0;
+	
+	FILE *rptr;
+	FILE *wptr;
+
+	
+	wptr = fopen("stats.txt","a");
+	
+
+	if((rptr = fopen("stats.txt","r")) == NULL)
+	{
+		puts("File could not be opened");
+	}
+	else{
+		
+		while(!feof(rptr)){
+			//int ok,ok1,ok2;
+			fscanf(rptr,"%d %d %d",&gamesPlayed,&totalWins,&totalDeaths);
+			
+			gamesPlayed++;
+			
+			if(winOrlose == 1){
+				//win
+				totalWins++;
+			}else if(winOrlose == 0){
+				//loss
+				totalDeaths++;
+			}
+		
+			wptr = fopen("stats.txt","w");
+			fprintf(wptr,"%d %d %d",gamesPlayed,totalWins,totalDeaths);
+			
+			fclose(rptr);
+			fclose(wptr);
+			
+			exit(0);
+		}
+	}
+}
+
+int getFileInfo(int num){
+	
+	int gamesPlayed = 0;
+	int totalDeaths = 0;
+	int totalWins = 0;
+	
+	FILE *rptr;
+	
+	if((rptr = fopen("stats.txt","r")) == NULL)
+	{
+		fopen("stats.txt","w");
+	}
+	else{
+		while(!feof(rptr)){
+			
+			fscanf(rptr,"%d %d %d",&gamesPlayed,&totalWins,&totalDeaths);
+			
+			//printf("%d %d %d\n",gamesPlayed,totalDeaths,longestTime);
+			//fprintf(wptr," %d %d %d\n",gamesPlayed,totalDeaths,longestTime);
+			
+			if(num == 1){
+				return(gamesPlayed);
+			}else if(num == 2){
+				return(totalWins);
+			}else{
+				return(totalDeaths);
+			}
+			
+			fclose(rptr);
+			
+			break;
+		}
+	}
+	
+	return 0;
+}
+
+
+int randomize(int *num, int SIZE)
+{
+    int i;
+    for(i=0;i<SIZE;i++)
+    {
+        *num = (rand()%10)+1;
+        num++;
+    }
+    return -1;
+}
+char uppercase(char *str)
+{
+    int c = 0;
+    char ch;
+    
+    while (str[c] != '\0')
+    {
+        ch = str[c];
+        if (ch >= 'a' && ch <= 'z'){
+            str[c] = str[c] - 32;
+    }
+        c++;
+}
+    
+    return printf("%s", str);
+}
+
+void warning(int count)
+{
+    #define RED(string)     "\x1b[31m" string "\x1b[0m"
+
+    for(count = 0;count<1000;count++)
+    {
+        if(count!=99)
+        {
+            printf(""RED("WARNING! TIME SYSTEM MALFUNCTION!")"");
+        }
+        
+    }
+}
+
+void TypeWriter(char *arr){
+    int len = strlen(arr);
+    int i;
+    for(i = 0; i < len; i++) {
+        putchar(arr[i]);
+        usleep(30000);  /* sleep for 35 milliSeconds */
+		fflush(stdout);
+    }
+}
